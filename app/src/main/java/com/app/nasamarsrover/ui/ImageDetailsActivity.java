@@ -1,6 +1,8 @@
 package com.app.nasamarsrover.ui;
 
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
@@ -29,6 +31,7 @@ public class ImageDetailsActivity extends AppCompatActivity {
 
     private ActivityImageDetailsBinding binding;
     private String hdUrl;
+    private String versionName = "1.0"; // Default version
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,10 +39,18 @@ public class ImageDetailsActivity extends AppCompatActivity {
         binding = ActivityImageDetailsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        // Get app version
+        try {
+            PackageInfo packageInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
+            versionName = packageInfo.versionName;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+
         // Set up toolbar
         setSupportActionBar(binding.toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setSubtitle("v" + com.app.nasamarsrover.BuildConfig.VERSION_NAME);
+        getSupportActionBar().setSubtitle("v" + versionName);
 
         // Get data from intent
         Intent intent = getIntent();

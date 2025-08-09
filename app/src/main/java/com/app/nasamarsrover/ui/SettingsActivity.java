@@ -1,6 +1,8 @@
 package com.app.nasamarsrover.ui;
 
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -24,6 +26,7 @@ public class SettingsActivity extends AppCompatActivity {
 
     private ActivitySettingsBinding binding;
     private SharedPreferencesManager preferencesManager;
+    private String versionName = "1.0"; // Default version
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,11 +34,19 @@ public class SettingsActivity extends AppCompatActivity {
         binding = ActivitySettingsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        // Get app version
+        try {
+            PackageInfo packageInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
+            versionName = packageInfo.versionName;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+
         // Set up toolbar
         setSupportActionBar(binding.toolbar);
         getSupportActionBar().setTitle(getString(R.string.nav_settings));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setSubtitle("v" + com.app.nasamarsrover.BuildConfig.VERSION_NAME);
+        getSupportActionBar().setSubtitle("v" + versionName);
 
         // Initialize preferences manager
         preferencesManager = SharedPreferencesManager.getInstance(this);

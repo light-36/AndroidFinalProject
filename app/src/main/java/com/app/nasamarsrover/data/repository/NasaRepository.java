@@ -1,7 +1,8 @@
 package com.app.nasamarsrover.data.repository;
 
 import android.content.Context;
-import android.os.AsyncTask;
+import android.os.Handler;
+import android.os.Looper;
 
 import androidx.lifecycle.LiveData;
 
@@ -9,8 +10,12 @@ import com.app.nasamarsrover.data.api.ApiClient;
 import com.app.nasamarsrover.data.api.NasaApiService;
 import com.app.nasamarsrover.data.database.AppDatabase;
 import com.app.nasamarsrover.data.model.NasaImage;
+import com.app.nasamarsrover.data.NasaImageDao;
 
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -25,6 +30,7 @@ public class NasaRepository {
     private final AppDatabase database;
     private final NasaApiService apiService;
     private final LiveData<List<NasaImage>> allImages;
+    private final ExecutorService executorService;
     
     /**
      * Constructor for NasaRepository
@@ -35,6 +41,7 @@ public class NasaRepository {
         database = AppDatabase.getInstance(context);
         apiService = ApiClient.getNasaApiService();
         allImages = database.nasaImageDao().getAllImages();
+        executorService = Executors.newSingleThreadExecutor();
     }
     
     /**
@@ -77,7 +84,14 @@ public class NasaRepository {
      * @param callback The callback to handle the result
      */
     public void saveImage(final NasaImage nasaImage, final DatabaseOperationCallback callback) {
-        new InsertImageAsyncTask(database.nasaImageDao(), callback).execute(nasaImage);
+        CompletableFuture.runAsync(() -> {
+            try {
+                database.nasaImageDao().insert(nasaImage);
+                new Handler(Looper.getMainLooper()).post(() -> callback.onSuccess());
+            } catch (Exception e) {
+                new Handler(Looper.getMainLooper()).post(() -> callback.onError("Failed to save image"));
+            }
+        }, executorService);
     }
     
     /**
@@ -87,7 +101,10 @@ public class NasaRepository {
      * @param callback The callback to handle the result
      */
     public void deleteImage(final NasaImage nasaImage, final DatabaseOperationCallback callback) {
-        new DeleteImageAsyncTask(database.nasaImageDao(), callback).execute(nasaImage);
+        CompletableFuture.runAsync(() -> {
+            database.nasaImageDao().delete(nasaImage);
+            new Handler(Looper.getMainLooper()).post(() -> callback.onSuccess());
+        }, executorService);
     }
     
     /**
@@ -98,81 +115,10 @@ public class NasaRepository {
      */
     public boolean imageExists(String date) {
         try {
-            return new ImageExistsAsyncTask(database.nasaImageDao()).execute(date).get();
+            return CompletableFuture.supplyAsync(() -> database.nasaImageDao().imageExists(date), executorService).get();
         } catch (Exception e) {
             e.printStackTrace();
             return false;
-        }
-    }
-    
-    /**
-     * AsyncTask for inserting a NASA image into the database
-     */
-    private static class InsertImageAsyncTask extends AsyncTask<NasaImage, Void, Long> {
-        private final NasaImageDao nasaImageDao;
-        private final DatabaseOperationCallback callback;
-        
-        InsertImageAsyncTask(NasaImageDao nasaImageDao, DatabaseOperationCallback callback) {
-            this.nasaImageDao = nasaImageDao;
-            this.callback = callback;
-        }
-        
-        @Override
-        protected Long doInBackground(NasaImage... nasaImages) {
-            return nasaImageDao.insert(nasaImages[0]);
-        }
-        
-        @Override
-        protected void onPostExecute(Long id) {
-            if (callback != null) {
-                if (id > 0) {
-                    callback.onSuccess();
-                } else {
-                    callback.onError("Failed to save image");
-                }
-            }
-        }
-    }
-    
-    /**
-     * AsyncTask for deleting a NASA image from the database
-     */
-    private static class DeleteImageAsyncTask extends AsyncTask<NasaImage, Void, Void> {
-        private final NasaImageDao nasaImageDao;
-        private final DatabaseOperationCallback callback;
-        
-        DeleteImageAsyncTask(NasaImageDao nasaImageDao, DatabaseOperationCallback callback) {
-            this.nasaImageDao = nasaImageDao;
-            this.callback = callback;
-        }
-        
-        @Override
-        protected Void doInBackground(NasaImage... nasaImages) {
-            nasaImageDao.delete(nasaImages[0]);
-            return null;
-        }
-        
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            if (callback != null) {
-                callback.onSuccess();
-            }
-        }
-    }
-    
-    /**
-     * AsyncTask for checking if a NASA image exists in the database
-     */
-    private static class ImageExistsAsyncTask extends AsyncTask<String, Void, Boolean> {
-        private final NasaImageDao nasaImageDao;
-        
-        ImageExistsAsyncTask(NasaImageDao nasaImageDao) {
-            this.nasaImageDao = nasaImageDao;
-        }
-        
-        @Override
-        protected Boolean doInBackground(String... dates) {
-            return nasaImageDao.imageExists(dates[0]);
         }
     }
     

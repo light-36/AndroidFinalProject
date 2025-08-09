@@ -3,12 +3,10 @@ package com.app.nasamarsrover;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.DatePicker;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -23,7 +21,7 @@ import com.app.nasamarsrover.databinding.ActivityMainBinding;
 import com.app.nasamarsrover.ui.AboutActivity;
 import com.app.nasamarsrover.ui.SavedImagesActivity;
 import com.app.nasamarsrover.ui.SettingsActivity;
-import com.app.nasamarsrover.util.HelpDialogUtil;
+import com.app.nasamarsrover.util.HelpDialogUtils;
 import com.app.nasamarsrover.util.SharedPreferencesManager;
 import com.bumptech.glide.Glide;
 import com.google.android.material.navigation.NavigationView;
@@ -32,6 +30,9 @@ import com.google.android.material.snackbar.Snackbar;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * Main activity for the NASA Image of the Day application.
@@ -45,6 +46,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private NasaImage currentImage;
     private final Calendar calendar = Calendar.getInstance();
     private final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+    private final ExecutorService executorService = Executors.newSingleThreadExecutor();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,7 +73,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         // Set up navigation drawer
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, binding.drawerLayout, binding.toolbar,
-                R.string.nav_home, R.string.nav_home);
+                R.string.navigation_drawer_open, 
+                R.string.navigation_drawer_close);
         binding.drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
         binding.navView.setNavigationItemSelectedListener(this);
@@ -108,6 +111,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             // Set today's date as default
             binding.editDate.setText(dateFormat.format(calendar.getTime()));
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        executorService.shutdown();
     }
 
     /**
@@ -185,7 +194,22 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         binding.textDate.setText(nasaImage.getDate());
 
         // Check if image is already saved
-        new CheckImageExistsTask().execute(nasaImage.getDate());
+        checkImageExists(nasaImage.getDate());
+    }
+
+    /**
+     * Check if an image exists in the database
+     * 
+     * @param date The date of the image to check
+     */
+    private void checkImageExists(String date) {
+        CompletableFuture.supplyAsync(() -> nasaRepository.imageExists(date), executorService)
+            .thenAccept(exists -> runOnUiThread(() -> {
+                binding.buttonSave.setEnabled(!exists);
+                if (exists) {
+                    Snackbar.make(binding.getRoot(), R.string.image_already_saved, Snackbar.LENGTH_SHORT).show();
+                }
+            }));
     }
 
     /**
@@ -255,7 +279,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_help) {
-            HelpDialogUtil.showMainActivityHelp(this);
+            HelpDialogUtils.showMainActivityHelpDialog(this);
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -285,24 +309,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             binding.drawerLayout.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
-        }
-    }
-
-    /**
-     * AsyncTask to check if an image exists in the database
-     */
-    private class CheckImageExistsTask extends AsyncTask<String, Void, Boolean> {
-        @Override
-        protected Boolean doInBackground(String... dates) {
-            return nasaRepository.imageExists(dates[0]);
-        }
-
-        @Override
-        protected void onPostExecute(Boolean exists) {
-            binding.buttonSave.setEnabled(!exists);
-            if (exists) {
-                Snackbar.make(binding.getRoot(), R.string.image_already_saved, Snackbar.LENGTH_SHORT).show();
-            }
         }
     }
 }

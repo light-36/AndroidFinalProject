@@ -1,6 +1,8 @@
 package com.app.nasamarsrover.ui;
 
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -30,6 +32,7 @@ public class SavedImagesActivity extends AppCompatActivity implements NasaImageA
     private ActivitySavedImagesBinding binding;
     private SavedImagesViewModel viewModel;
     private NasaImageAdapter adapter;
+    private String versionName = "1.0"; // Default version
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,11 +40,19 @@ public class SavedImagesActivity extends AppCompatActivity implements NasaImageA
         binding = ActivitySavedImagesBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        // Get app version
+        try {
+            PackageInfo packageInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
+            versionName = packageInfo.versionName;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+
         // Set up toolbar
         setSupportActionBar(binding.toolbar);
         getSupportActionBar().setTitle(getString(R.string.nav_saved_images));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setSubtitle("v" + com.app.nasamarsrover.BuildConfig.VERSION_NAME);
+        getSupportActionBar().setSubtitle("v" + versionName);
 
         // Set up RecyclerView
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(this));

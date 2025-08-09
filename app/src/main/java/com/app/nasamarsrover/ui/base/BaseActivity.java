@@ -90,13 +90,14 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
      */
     protected void updateNavigationSelection() {
         if (navigationView != null) {
-            if (this instanceof MainActivity) {
+            String className = this.getClass().getName();
+            if (className.equals(MainActivity.class.getName())) {
                 navigationView.setCheckedItem(R.id.nav_home);
-            } else if (this instanceof SavedImagesActivity) {
+            } else if (className.equals(SavedImagesActivity.class.getName())) {
                 navigationView.setCheckedItem(R.id.nav_saved_images);
-            } else if (this instanceof SettingsActivity) {
+            } else if (className.equals(SettingsActivity.class.getName())) {
                 navigationView.setCheckedItem(R.id.nav_settings);
-            } else if (this instanceof AboutActivity) {
+            } else if (className.equals(AboutActivity.class.getName())) {
                 navigationView.setCheckedItem(R.id.nav_about);
             }
         }
@@ -166,13 +167,14 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
      * Show the help dialog for the activity
      */
     protected void showHelpDialog() {
-        if (this instanceof MainActivity) {
+        String className = this.getClass().getName();
+        if (className.equals(MainActivity.class.getName())) {
             HelpDialogUtils.showMainActivityHelpDialog(this);
-        } else if (this instanceof SavedImagesActivity) {
+        } else if (className.equals(SavedImagesActivity.class.getName())) {
             HelpDialogUtils.showSavedImagesActivityHelpDialog(this);
-        } else if (this instanceof SettingsActivity) {
+        } else if (className.equals(SettingsActivity.class.getName())) {
             HelpDialogUtils.showSettingsActivityHelpDialog(this);
-        } else if (this instanceof AboutActivity) {
+        } else if (className.equals(AboutActivity.class.getName())) {
             HelpDialogUtils.showAboutActivityHelpDialog(this);
         }
     }

@@ -1,6 +1,8 @@
 package com.app.nasamarsrover.ui;
 
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
@@ -8,7 +10,6 @@ import android.view.MenuItem;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.app.nasamarsrover.BuildConfig;
 import com.app.nasamarsrover.R;
 import com.app.nasamarsrover.databinding.ActivityAboutBinding;
 import com.app.nasamarsrover.util.HelpDialogUtils;
@@ -20,6 +21,7 @@ import com.app.nasamarsrover.util.HelpDialogUtils;
 public class AboutActivity extends AppCompatActivity {
 
     private ActivityAboutBinding binding;
+    private String versionName = "1.0"; // Default version
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,14 +29,22 @@ public class AboutActivity extends AppCompatActivity {
         binding = ActivityAboutBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        // Get app version
+        try {
+            PackageInfo packageInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
+            versionName = packageInfo.versionName;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+
         // Set up toolbar
         setSupportActionBar(binding.toolbar);
         getSupportActionBar().setTitle(getString(R.string.nav_about));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setSubtitle("v" + BuildConfig.VERSION_NAME);
+        getSupportActionBar().setSubtitle("v" + versionName);
 
         // Set version text
-        binding.textVersion.setText(getString(R.string.version, BuildConfig.VERSION_NAME));
+        binding.textVersion.setText(getString(R.string.version, versionName));
 
         // Set up NASA website button
         binding.buttonNasaWebsite.setOnClickListener(v -> {
