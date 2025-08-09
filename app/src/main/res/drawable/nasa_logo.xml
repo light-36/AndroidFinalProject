@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="200dp"
+    android:height="200dp"
+    android:viewportWidth="200"
+    android:viewportHeight="200">
+    
+    <!-- Blue circle background -->
+    <path
+        android:fillColor="#0B3D91"
+        android:pathData="M100,0 A100,100 0 1,1 100,200 A100,100 0 1,1 100,0z" />
+    
+    <!-- White NASA text and orbit -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M100,28 A72,72 0 1,1 100,172 A72,72 0 1,1 100,28z M100,40 A60,60 0 1,0 100,160 A60,60 0 1,0 100,40z" />
+    
+    <!-- NASA text -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M52,78 L52,122 L62,122 L62,105 L72,122 L85,122 L70,100 L85,78 L72,78 L62,95 L62,78z" />
+    
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M90,78 L90,122 L120,122 L120,112 L100,112 L100,105 L115,105 L115,95 L100,95 L100,88 L120,88 L120,78z" />
+    
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M125,78 L125,122 L135,122 L135,105 L145,105 L145,122 L155,122 L155,78 L145,78 L145,95 L135,95 L135,78z" />
+    
+    <!-- Red swoosh -->
+    <path
+        android:fillColor="#FC3D21"
+        android:pathData="M100,100 A40,40 0 0,1 140,60 A40,40 0 0,1 180,100 L170,100 A30,30 0 0,0 140,70 A30,30 0 0,0 110,100z" />
+</vector>

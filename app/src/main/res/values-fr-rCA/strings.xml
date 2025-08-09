@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Image du Jour de la NASA</string>
+    
+    <!-- Navigation -->
+    <string name="nav_home">Accueil</string>
+    <string name="nav_saved_images">Images Sauvegardées</string>
+    <string name="nav_settings">Paramètres</string>
+    <string name="nav_about">À Propos</string>
+    
+    <!-- Main Activity -->
+    <string name="select_date">Sélectionner une Date</string>
+    <string name="search">Rechercher</string>
+    <string name="save_image">Sauvegarder l\'Image</string>
+    <string name="view_hd_image">Voir l\'Image HD</string>
+    <string name="loading">Chargement…</string>
+    <string name="error_loading_image">Erreur de chargement de l\'image</string>
+    <string name="image_saved">Image sauvegardée avec succès</string>
+    <string name="image_already_saved">Image déjà sauvegardée</string>
+    
+    <!-- Saved Images -->
+    <string name="no_saved_images">Aucune image sauvegardée</string>
+    <string name="delete_image">Supprimer l\'Image</string>
+    <string name="image_deleted">Image supprimée avec succès</string>
+    <string name="confirm_delete">Êtes-vous sûr de vouloir supprimer cette image?</string>
+    <string name="yes">Oui</string>
+    <string name="no">Non</string>
+    <string name="undo">Annuler</string>
+    
+    <!-- Image Details -->
+    <string name="image_details">Détails de l\'Image</string>
+    <string name="title">Titre</string>
+    <string name="date">Date</string>
+    <string name="explanation">Explication</string>
+    <string name="copyright">Droits d\'Auteur</string>
+    <string name="view_hd">Voir HD</string>
+    <string name="share">Partager</string>
+    <string name="share_subject">Image du Jour de la NASA: %1$s</string>
+    <string name="share_text">Découvrez cette Image du Jour de la NASA: %1$s\n\n%2$s\n\nVoir en ligne: %3$s</string>
+    <string name="share_via">Partager via</string>
+    
+    <!-- Settings -->
+    <string name="settings">Paramètres</string>
+    <string name="api_key">Clé API NASA</string>
+    <string name="api_key_hint">Entrez votre clé API NASA</string>
+    <string name="api_key_info">Laissez vide pour utiliser la clé API par défaut. Obtenez votre propre clé sur api.nasa.gov</string>
+    <string name="theme">Thème</string>
+    <string name="theme_summary">Choisir le thème de l\'application</string>
+    <string name="dark_mode">Mode Sombre</string>
+    <string name="language">Langue</string>
+    <string name="language_summary">Choisir la langue de l\'application</string>
+    <string name="english">Anglais</string>
+    <string name="french">Français (Canadien)</string>
+    <string name="language_change_restart">L\'application utilisera la nouvelle langue au prochain redémarrage</string>
+    <string name="save">Sauvegarder</string>
+    <string name="reset">Réinitialiser</string>
+    <string name="settings_saved">Paramètres sauvegardés avec succès</string>
+    
+    <!-- About -->
+    <string name="about">À Propos</string>
+    <string name="version">Version %1$s</string>
+    <string name="app_description">Image du Jour de la NASA est une application qui vous permet de rechercher et de sauvegarder l\'Image Astronomique du Jour de la NASA.</string>
+    <string name="useful_links">Liens Utiles</string>
+    <string name="nasa_website">Site Web de la NASA</string>
+    <string name="apod_website">Site Web APOD</string>
+    <string name="nasa_api">API NASA</string>
+    <string name="copyright"> 2025 Application Image du Jour de la NASA</string>
+    
+    <!-- Help -->
+    <string name="help">Aide</string>
+    <string name="help_main">Sélectionnez une date et appuyez sur Rechercher pour trouver l\'Image Astronomique du Jour de la NASA pour cette date. Vous pouvez sauvegarder l\'image pour la consulter ultérieurement.</string>
+    <string name="help_saved">Cet écran affiche toutes vos images sauvegardées. Appuyez sur une image pour voir les détails. Glissez vers la gauche ou la droite pour supprimer une image.</string>
+    <string name="help_details">Cet écran affiche les détails de l\'image sélectionnée. Vous pouvez voir la version HD de l\'image ou la partager avec d\'autres.</string>
+    <string name="help_settings">Configurez vos paramètres d\'application ici, y compris votre clé API NASA, votre préférence de thème et votre langue.</string>
+    
+    <!-- Content Descriptions -->
+    <string name="nasa_image_thumbnail">Miniature d\'Image NASA</string>
+    <string name="nasa_image">Image NASA</string>
+</resources>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Override specific colors for night mode -->
+    <color name="colorBackground">@color/colorBackgroundDark</color>
+    <color name="colorSurface">@color/colorSurfaceDark</color>
+    <color name="colorText">@color/colorTextDark</color>
+    <color name="colorTextSecondary">@color/colorTextSecondaryDark</color>
+</resources>
