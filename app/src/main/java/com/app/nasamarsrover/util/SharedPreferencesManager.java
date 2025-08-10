@@ -57,7 +57,7 @@ public class SharedPreferencesManager {
      * @return The NASA API key, or the default key if not set
      */
     public String getApiKey() {
-        return sharedPreferences.getString(KEY_API_KEY, "DgPLcIlnmN0Cwrzcg3e9NraFaYLIDI68Ysc6Zh3d");
+        return sharedPreferences.getString(KEY_API_KEY, "A3ySEOTVitP15agtj078OgvX7RuB9WRuhd8nsbLf");
     }
     
     /**

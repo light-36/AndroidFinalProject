@@ -38,8 +38,14 @@
     <string name="copyright">Droits d\'Auteur</string>
     <string name="view_hd">Voir HD</string>
     <string name="share">Partager</string>
+    <string name="share_title">Image du Jour de la NASA</string>
     <string name="no_image_to_share">Aucune image disponible à partager</string>
     <string name="error_opening_url">Erreur lors de l\'ouverture de l\'URL</string>
+    <string name="date_label">Date:</string>
+    <string name="copyright_label">Droits d\'Auteur:</string>
+    <string name="image_url_label">URL de l\'Image:</string>
+    <string name="hd_image_url_label">URL de l\'Image HD:</string>
+    <string name="shared_via_app">Partagé via l\'application Image du Jour de la NASA</string>
     <string name="share_subject">Image du Jour de la NASA: %1$s</string>
     <string name="share_text">Découvrez cette Image du Jour de la NASA: %1$s\n\n%2$s\n\nVoir en ligne: %3$s</string>
     <string name="share_via">Partager via</string>

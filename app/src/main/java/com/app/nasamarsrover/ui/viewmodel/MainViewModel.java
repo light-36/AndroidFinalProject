@@ -72,7 +72,7 @@ public class MainViewModel extends AndroidViewModel {
             public void onSuccess(NasaResponse nasaResponse) {
                 nasaImageLiveData.setValue(nasaResponse);
                 loadingLiveData.setValue(false);
-                preferencesManager.setLastViewedDate(date);
+                preferencesManager.saveLastViewedDate(date);
                 checkIfImageExists(date);
             }
 

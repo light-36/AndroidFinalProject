@@ -2,6 +2,7 @@ package com.app.nasamarsrover.data.model;
 
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
+import com.google.gson.annotations.SerializedName;
 
 /**
  * Entity class representing a NASA image of the day.
@@ -11,12 +12,26 @@ import androidx.room.PrimaryKey;
 public class NasaImage {
     @PrimaryKey(autoGenerate = true)
     private long id;
+    
+    @SerializedName("title")
     private String title;
+    
+    @SerializedName("date")
     private String date;
+    
+    @SerializedName("url")
     private String url;
+    
+    @SerializedName("hdurl")
     private String hdUrl;
+    
+    @SerializedName("explanation")
     private String explanation;
+    
+    @SerializedName("copyright")
     private String copyright;
+    
+    @SerializedName("media_type")
     private String mediaType;
 
     /**

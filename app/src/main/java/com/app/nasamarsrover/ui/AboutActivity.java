@@ -43,8 +43,8 @@ public class AboutActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setSubtitle("v" + versionName);
 
-        // Set version text
-        binding.textVersion.setText(getString(R.string.version, versionName));
+        // Set version text - directly set the text with version to avoid formatting issues
+        binding.textVersion.setText("Version " + versionName);
 
         // Set up NASA website button
         binding.buttonNasaWebsite.setOnClickListener(v -> {

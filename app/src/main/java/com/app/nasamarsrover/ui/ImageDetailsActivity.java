@@ -5,15 +5,18 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.app.nasamarsrover.R;
 import com.app.nasamarsrover.databinding.ActivityImageDetailsBinding;
 import com.app.nasamarsrover.util.HelpDialogUtils;
+import com.app.nasamarsrover.util.SharingUtils;
 import com.bumptech.glide.Glide;
 
 /**
@@ -22,13 +25,14 @@ import com.bumptech.glide.Glide;
  */
 public class ImageDetailsActivity extends AppCompatActivity {
 
+    private static final String TAG = "ImageDetailsActivity";
+    
     public static final String EXTRA_IMAGE_ID = "extra_image_id";
     public static final String EXTRA_IMAGE_TITLE = "extra_image_title";
     public static final String EXTRA_IMAGE_DATE = "extra_image_date";
     public static final String EXTRA_IMAGE_URL = "extra_image_url";
     public static final String EXTRA_IMAGE_HD_URL = "extra_image_hd_url";
     public static final String EXTRA_IMAGE_EXPLANATION = "extra_image_explanation";
-
     private ActivityImageDetailsBinding binding;
     private String hdUrl;
     private String versionName = "1.0"; // Default version
@@ -60,6 +64,9 @@ public class ImageDetailsActivity extends AppCompatActivity {
             String url = intent.getStringExtra(EXTRA_IMAGE_URL);
             hdUrl = intent.getStringExtra(EXTRA_IMAGE_HD_URL);
             String explanation = intent.getStringExtra(EXTRA_IMAGE_EXPLANATION);
+            
+            // Debug log to check if hdUrl is null
+            Log.d(TAG, "HD URL: " + hdUrl);
 
             // Set title
             getSupportActionBar().setTitle(title);
@@ -78,10 +85,21 @@ public class ImageDetailsActivity extends AppCompatActivity {
 
             // Set up view HD button
             binding.buttonViewHd.setOnClickListener(v -> {
-                if (hdUrl != null) {
+                if (hdUrl != null && !hdUrl.isEmpty()) {
+                    Log.d(TAG, "Opening HD URL: " + hdUrl);
                     openWebUrl(hdUrl);
+                } else {
+                    Log.e(TAG, "HD URL is null or empty");
+                    Toast.makeText(this, R.string.error_opening_url, Toast.LENGTH_SHORT).show();
                 }
             });
+
+            // Show or hide HD button based on hdUrl availability
+            if (hdUrl == null || hdUrl.isEmpty()) {
+                binding.buttonViewHd.setVisibility(View.GONE);
+            } else {
+                binding.buttonViewHd.setVisibility(View.VISIBLE);
+            }
 
             // Set up share button
             binding.buttonShare.setOnClickListener(v -> shareImage(title, explanation, url));
@@ -94,9 +112,14 @@ public class ImageDetailsActivity extends AppCompatActivity {
      * @param url The URL to open
      */
     private void openWebUrl(String url) {
-        Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.setData(Uri.parse(url));
-        startActivity(intent);
+        try {
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            intent.setData(Uri.parse(url));
+            startActivity(intent);
+        } catch (Exception e) {
+            Log.e(TAG, "Error opening URL: " + e.getMessage());
+            Toast.makeText(this, R.string.error_opening_url, Toast.LENGTH_SHORT).show();
+        }
     }
 
     /**

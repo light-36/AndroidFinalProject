@@ -16,8 +16,6 @@ import com.app.nasamarsrover.databinding.ActivitySettingsBinding;
 import com.app.nasamarsrover.util.HelpDialogUtils;
 import com.app.nasamarsrover.util.SharedPreferencesManager;
 
-import java.util.Locale;
-
 /**
  * Activity for configuring app settings.
  * This activity allows users to change app preferences such as API key, theme, and language.
@@ -46,7 +44,7 @@ public class SettingsActivity extends AppCompatActivity {
         setSupportActionBar(binding.toolbar);
         getSupportActionBar().setTitle(getString(R.string.nav_settings));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setSubtitle("v" + versionName);
+        getSupportActionBar().setSubtitle(versionName);
 
         // Initialize preferences manager
         preferencesManager = SharedPreferencesManager.getInstance(this);
@@ -72,7 +70,7 @@ public class SettingsActivity extends AppCompatActivity {
         binding.radioGroupLanguage.setOnCheckedChangeListener((group, checkedId) -> {
             String language = checkedId == R.id.radio_french ? "fr" : "en";
             if (!language.equals(preferencesManager.getLanguage())) {
-                preferencesManager.setLanguage(language);
+                preferencesManager.saveLanguage(language);
                 Toast.makeText(this, R.string.language_change_restart, Toast.LENGTH_LONG).show();
             }
         });

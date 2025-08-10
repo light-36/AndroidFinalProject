@@ -37,8 +37,14 @@
     <string name="copyright">Copyright</string>
     <string name="view_hd">View HD</string>
     <string name="share">Share</string>
+    <string name="share_title">NASA Image of the Day</string>
     <string name="no_image_to_share">No image available to share</string>
     <string name="error_opening_url">Error opening URL</string>
+    <string name="date_label">Date:</string>
+    <string name="copyright_label">Copyright:</string>
+    <string name="image_url_label">Image URL:</string>
+    <string name="hd_image_url_label">HD Image URL:</string>
+    <string name="shared_via_app">Shared via NASA Image of the Day App</string>
     <string name="share_subject">NASA Image of the Day: %1$s</string>
     <string name="share_text">Check out this NASA Image of the Day: %1$s\n\n%2$s\n\nView it online: %3$s</string>
     <string name="share_via">Share via</string>
